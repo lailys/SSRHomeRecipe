@@ -1,0 +1,109 @@
+body {
+  background-color: wheat;
+  width: 100vw;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  width: 100vw;
+  height: 10vh;
+}
+
+.header-link {
+  margin: 0 1vw 0 1vw;
+}
+
+.recipepage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+}
+
+.recipepage-recipe {
+  background-color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh;
+  width: 27vw;
+  height: 20vh;
+}
+
+.recipepage-img {
+  width: 6vw;
+  height: 6vh;
+}
+
+.detail-img {
+  width: 50vw;
+  height: 50vh;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2vh 15vw;
+  width: 70vw;
+  height: 10vh;
+}
+
+.pagination a {
+  text-decoration: none;
+  margin: 1vh;
+}
+
+.checkout-payment {
+  background-color: white;
+  position: absolute;
+  top: 16vh;
+  left:28vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 2vh 15vw;
+  width: 40vw;
+  height: 40vh;
+}
+.checkout-payment form{
+  background-color: violet;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 40vh;
+}
+.order-review{
+  background-color: teal;
+  position: absolute;
+  top:18vh;
+  left:5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 40vh;
+}
+.checkout-button{
+  border:.1px solid white;
+  background-color: wheat;
+  position: absolute;
+  top: 60vh;
+  right:5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 40vw;
+  height: 5vh;
+}

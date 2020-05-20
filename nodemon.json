@@ -1,0 +1,8 @@
+{
+    "env":{
+        "MONGO_USER":"laily",
+        "MONGO_PASSWORD":"MwZ0kloNsWWxHN5F",
+        "MONGO_DEFAULT_DATABASE":"page"
+    }
+
+}
