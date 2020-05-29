@@ -27,8 +27,8 @@ exports.getRecipes = (req, res, next) => {
         console.log(recipes, "recipesssssss---->")
         res.status(200).send({
           data: recipes,
-          pagedata: recipes.slice(req.params._id.split('-')[1] * 9 - 9,
-            req.params._id.split('-')[1] * 9)
+          pagedata: recipes.slice(req.params._id.split('-')[1] * 10 - 10,
+            req.params._id.split('-')[1] * 10)
         });
       })
       .catch(err => {
@@ -48,8 +48,8 @@ exports.getRecipes = (req, res, next) => {
         console.log("recipesssssss")
         res.status(200).send({
           data: recipes,
-          pagedata: recipes.slice(req.params._id.split('-')[1] * 9 - 9,
-            req.params._id.split('-')[1] * 9)
+          pagedata: recipes.slice(req.params._id.split('-')[1] * 10 - 10,
+            req.params._id.split('-')[1] * 10)
         });
 
       })
@@ -65,22 +65,22 @@ exports.getRecipes = (req, res, next) => {
 ///////////get Recipes ------------------>
 exports.getOwnerRecipes = (req, res, next) => {
   console.log("--getOwnerRecipes--", req.url, req.params._id, "---");
-  console.log("--getOwnerRecipes--", req.params._id !== 'null', "---");
-  if (req.params._id !== 'null') {
+  console.log("--getOwnerRecipes--",req.params._id.split('-')[0],req.params._id.split('-')[1], "---");
+  if (req.params._id.split('-')[0] !== '0') {
     Recipe.find({
-        userId: req.params._id
+        userId: req.params._id.split('-')[0]
 
       })
       .populate("userId")
       .sort({createdAt:-1})
       .then((recipes) => {
         console.log(recipes, "get owner recipies")
-        if(recipes.length>9){
+        if(recipes.length>10){
 
           res.send({
             ownerRecipes: recipes,
-            ownerRecipespage: recipes.slice(req.params._id.split('-')[1] * 9 - 9,
-            req.params._id.split('-')[1] * 9)
+            ownerRecipespage: recipes.slice(req.params._id.split('-')[1] * 10 - 10,
+            req.params._id.split('-')[1] * 10)
           });
         }else{
           res.send({
@@ -101,7 +101,7 @@ exports.getOwnerRecipes = (req, res, next) => {
 };
 exports.getOwnerRecipesLoad = (req, res, next) => {
 
-  console.log("--getOwnerRecipesLoad--", req.url, req.params, "---");
+  console.log("--getOwnerRecipesLoad--", req.params, "---");
   console.log("--getOwnerRecipesLoads--", req.params._id.split('-')[0] !== '0', "---");
   if (req.params._id.split('-')[0] !== '0') {
     Recipe.find({
@@ -111,12 +111,12 @@ exports.getOwnerRecipesLoad = (req, res, next) => {
       .sort({createdAt:-1})
       .then((recipes) => {
         console.log(recipes, "get owner recipies")
-        if(recipes.length>9){
+        if(recipes.length>10){
 
           res.send({
             ownerRecipes: recipes,
-            ownerRecipespage: recipes.slice(req.params._id.split('-')[1] * 9 - 9,
-            req.params._id.split('-')[1] * 9)
+            ownerRecipespage: recipes.slice(req.params._id.split('-')[1] * 10 - 10,
+            req.params._id.split('-')[1] * 10)
           });
         }else{
           res.send({
@@ -147,9 +147,12 @@ exports.getRecipe = (req, res, next) => {
         error.statusCode = 404;
         throw error
       } else {
-        res.status(200).send({
-          data: recipe,
-        });
+  
+
+          res.status(200).send({
+            data: recipe,
+          });
+
       }
     })
     .catch(err => {
@@ -181,16 +184,19 @@ exports.postRecipe = (req, res, next) => {
       msg: 'wrong text format'
     });
   } else {
-    // User.find({_id:req.userId})
-    // .then(user=>{
+    User.find({_id:req.userId})
+    .then(user=>{
+      console.log(user[0].name,"user[0].name")
       let recipe = new Recipe({
         name: req.body.name,
         picUrl: image.path,
         description: req.body.description,
         price: req.body.price,
         userId: req.userId,
-        // userName:user.name,
-        date: new Date()
+        author:user[0].name,
+        date: new Date(),
+        stars:0,
+        category:req.body.category,
       });
       recipe.save().then(result => {
         console.log(result, "pagerecipe made")
@@ -203,6 +209,8 @@ exports.postRecipe = (req, res, next) => {
         error.statusCode = 500;
         next(error);
       });
+    })
+
 
     // });
 
@@ -326,16 +334,20 @@ exports.postCart = (req, res, next) => {
     });
 };
 exports.deleteFromCart = (req, res, next) => {
-  console.log("--deleteFromCart--", req.user, "---");
-  return req.user
-    .deleteFromCart(req.body)
-    .then((result) => {
-      return res.status(200).send(result);
-    })
-    .catch((err) => {
-      console.log(err, "deleteFromCart");
-      res.status(500).send(err);
-    });
+  console.log("--deleteFromCart--", req.body, "---");
+User.find({_id:req.body.id})
+.then(user=>{
+  console.log(user,"+_+_+_+_")
+  return user[0].deleteFromCart(req.body.data)
+  .then((result) => {
+    return res.status(200).send(result);
+  })
+  .catch((err) => {
+    console.log(err, "deleteFromCart");
+    res.status(500).send(err);
+  });
+}
+  )
 };
 
 ///////////-------------------------------------------
@@ -411,7 +423,7 @@ exports.postUser = (req, res, next) => {
   if (!err.isEmpty()) {
     console.log(err.array(), "err.array()")
     res.send({
-      msg: err.array()[0].msg,
+      msg: err.array(),
     });
   } else {
     // User.findOne({
@@ -490,6 +502,7 @@ exports.postUser = (req, res, next) => {
           return sendPromise
             .then((res) => {
               console.log("email has been sent");
+
             })
             .catch(function (err) {
               console.error(err, err.stack);
@@ -682,6 +695,32 @@ exports.postNewPassword = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+///////////-------------------------------------------
+///////////postComment------------------>
+exports.postSubmitComment = (req, res, next) => {
+  console.log("--postSubmitComment--", req.body, "---");
+  User.find({_id:req.body.userId})
+  .then(user=>{
+    
+    Recipe.find({_id: req.body.id})
+    .then(recipe=>{
+      return  recipe[0].addComment(req.body.data,user[0].name)
+      .then((result) => {
+        io.getIO().emit('recipes',{action:'edit'})
+
+        res.send({
+          data:"posted"
+        })
+      })
+      .catch((err) => {
+        console.log(err, "comment");
+        res.status(500).send(err);
+      });
+   
+    })
+  })
+
+}
 ///////////-------------------------------------------
 ///////////postLogout------------------>
 

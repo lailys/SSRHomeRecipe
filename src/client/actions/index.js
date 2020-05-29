@@ -5,11 +5,16 @@ export const SIGNUP_NEW_USER = 'Signup_New_User';
 export const signupNewUser = (data) => async (dispatch) => {
 
   const res = await axios.post("http://localhost:3000/auth-signup", data)
-  console.log("action---->signupNewUser---->res.data", res)
-  dispatch({
-    type: SIGNUP_NEW_USER,
-    payload: res.data,
-  });
+  console.log("action---->signupNewUser---->res.data", res,!res.msg)
+  // if(!res.msg){
+   return dispatch({
+      type: SIGNUP_NEW_USER,
+      payload: res.data,
+    });
+//   }else{
+// return res.msg
+//   }
+ 
 
 };
 ///////////-------------------------------------------
@@ -121,18 +126,18 @@ console.log(id,"action->id",!global.localStorage)
 ///////////-------------------------------------------
 ///////////get individual Recipe in the list------------------>
 export const FFETCH_OWNER_RECIPES = 'fetch_Owner_recipes';
-export const fetchOwnerRecipes = (id) => async (dispatch) => {
-
+export const fetchOwnerRecipes = (url) => async (dispatch) => {
+console.log(url,">>>>>")
   if(global.localStorage){
     const AuthStr = 'Bearer '.concat(global.localStorage.token); 
-    const res = await axios.get(`http://localhost:3000/owner-alldata/${id}`,{ headers: { Authorization: AuthStr } })
+    const res = await axios.get(`http://localhost:3000/owner-alldata/${url}`,{ headers: { Authorization: AuthStr } })
     console.log("action---->fetchOwnerRecipes---->res.data", res.data)
     dispatch({
       type: FFETCH_OWNER_RECIPES,
       payload: res.data,
     });
   }else{
-    const res = await axios.get(`http://localhost:3000/owner-data/${id}`)
+    const res = await axios.get(`http://localhost:3000/owner-data/${url}`)
     dispatch({
       type: FFETCH_OWNER_RECIPES,
       payload: res.data,
@@ -206,6 +211,30 @@ export const deleteRecipe = (data) => {
 
 };
 ///////////-------------------------------------------
+///////////open cart------------------>
+export const OPEN_CART = 'Open_Cart';
+export const openCart = () => async (dispatch) => {
+
+  localStorage.setItem('cart', "1");
+  console.log(localStorage.getItem('cart')," console.log(localStorage.getItem('cart'))")
+  dispatch({
+    type:  OPEN_CART ,
+    payload: localStorage.getItem('cart')
+  });
+}
+///////////-------------------------------------------
+///////////close cart------------------>
+export const CLOSE_CART = 'Close_Cart';
+export const closeCart = () => async (dispatch) => {
+
+  localStorage.removeItem('cart');
+  console.log(localStorage.getItem('cart')," console.log(localStorage.getItem('cart'))-----")
+  dispatch({
+    type: CLOSE_CART,
+    payload: localStorage.getItem('cart')
+  });
+}
+///////////-------------------------------------------
 ///////////fetch all recipes in the cart------------------>
 export const FETCH_CART_ITEMS = 'Fetch_Cart_Items';
 export const fetchCartItems = () => async (dispatch) => {
@@ -251,11 +280,11 @@ export const addToCart = (data) => {
 ///////////-------------------------------------------
 ///////////remove items from  cart------------------>
 export const DELETE_FROM_CART = 'Delete_From_Cart';
-export const deletFromCart = (data) => {
-  console.log('DELETE_FROM_CART', data, "--------------------->")
+export const deletFromCart = (data,id) => {
+  console.log('DELETE_FROM_CART', data,id, "--------------------->")
 
   return (dispatch) => {
-    return axios.post("http://localhost:3000/delete-from-cart", data)
+    return axios.post("http://localhost:3000/delete-from-cart", {data,id})
       .then(response => {
         dispatch(fetchCartItems());
       })
@@ -307,6 +336,24 @@ export const ownerOrders = (id) => async (dispatch) => {
   });
 
 };
+///////////-------------------------------------------
+///////////post Comment------------------>
+export const ADD_COMMENT = 'Add_Comment';
+export const addComment = (data,id,userId) => async (dispatch) => {
+  console.log("ADD_COMMENT", data,id,userId, "--------------------->")
+//   const AuthStr = 'Bearer '.concat(global.localStorage.token); 
+// console.log(AuthStr,"AuthStr")
+//   return (dispatch) => {
+//     return axios.post('http://localhost:3000/data', data,{ headers: { Authorization: AuthStr } })
+
+//   };
+const res = await axios.post('http://localhost:3000/submit-comment', {data,id,userId})
+console.log("action---->ADD_COMMENT---->res.data", res)
+
+};
+///////////-------------------------------------------
+///////////fetchComments------------------>
+
 ///////////-------------------------------------------
 ///////////authenticate the user------------------>
 export const LOGIN_OUT_ACCOUNT = 'Login_Out_Account';

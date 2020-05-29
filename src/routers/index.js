@@ -35,6 +35,9 @@ router.get('/submit-order/:_id', pageController.getOwnerOrder)
 router.post('/submit-order', pageController.postSubmitOrder)
 router.get('/order/:orderId', pageController.getInvoice)
 
+///////////comment-------------------->
+router.post('/submit-comment', pageController.postSubmitComment)
+
 ///////////auth-------------------->
 
 router.post('/auth-signup',

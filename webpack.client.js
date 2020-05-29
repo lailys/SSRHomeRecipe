@@ -43,7 +43,7 @@ const config = {
     ]
   },
   resolve: {
-    extensions: [".js", ".jsx", ".json", ".wasm", ".mjs", "*", ".css", ".style","*"]
+    extensions: [".js", ".jsx", ".json", ".wasm", ".mjs", "*", ".css", ".style","*",]
   },
 //   externals: [webpackNodeExternals()]
 performance: {

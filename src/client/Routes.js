@@ -47,11 +47,11 @@ export default [{
         path: '/edit-recipe/:_id',
         exact: true,
       },
-      {
-        ...Cart,
-        path: '/cart',
-        exact: true,
-      },
+      // {
+      //   ...Cart,
+      //   path: '/cart',
+      //   exact: true,
+      // },
       {
         ...Checkout,
         path: '/checkout',

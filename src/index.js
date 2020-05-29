@@ -56,7 +56,7 @@ const accessLogStream = fs.createWriteStream(path.join("src/", "access.log"), {
 console.log(path.join(__dirname, "access.log"), "???");
 
 app.use(cors());
-app.options("*", cors());
+// app.options("*", cors());
 app.use(express.static("public"));
 app.use("/picUrl", express.static("picUrl"));
 app.use(bodyParser.json());

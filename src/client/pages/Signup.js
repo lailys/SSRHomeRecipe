@@ -7,7 +7,7 @@ import { signupNewUser } from "../actions";
 class Signup extends Component {
   state = {
     newUser: {},
-    message: "",
+    message: [],
   };
   componentDidMount() {
     console.log("componentDidMount of login", this.props);
@@ -26,23 +26,36 @@ class Signup extends Component {
       "this.state.newUser.password===this.state.newUser.confirmPassword"
     );
     this.props.signupNewUser(this.state.newUser).then((res) => {
-      if (this.props.newUser === "1") {
+      console.log(res, "signup------->");
+      if (res.payload.newUser === "1") {
         this.props.history.push("/login");
-      } else{
-        this.setState({ message:this.props.msg });
-
+      } else {
+        this.setState({ message: res.payload.msg });
       }
     });
   };
+  renderMessage() {
+    let allmsg =[];
+    if (this.state.message.length > 0) {
+      
+      this.state.message.map((msg) => {
+      allmsg.push(<div className="each-message">{msg.msg}</div>)
+      });
+    }
+    return(<p>{allmsg}</p>)
+  }
   render() {
     return (
-      <div>
-        <form onSubmit={this.signup} noValidate>
+      <div className="login-page">
+        <form onSubmit={this.signup} noValidate className="login-form">
+          <div className="login-title">SIGNUP</div>
+          {/* <br />
+          <br /> */}
           <input
             onChange={(e) => this.createRecipe(e)}
             id="name"
             type="text"
-            placeholder="name"
+            placeholder="Name"
             required
           />
           <br />
@@ -69,11 +82,14 @@ class Signup extends Component {
             placeholder="Confirm Password"
             required
           />
-          <br />
-          <br />
-          <button type="submit">SIGNUP</button>
+          <Link to="/login" className="change-password">
+            Already have an account?
+          </Link>
+          <button type="submit" className="main-button">
+            SIGNUP
+          </button>
         </form>
-        <div id="message">message: {this.state.message}</div>
+        <div id="message">{this.renderMessage()}</div>
       </div>
     );
   }

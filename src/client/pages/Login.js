@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link, Route } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { authenticateAccount } from "../actions";
-import opensocket from 'socket.io-client'
+import opensocket from "socket.io-client";
 
 class Login extends Component {
   state = {
@@ -35,36 +35,39 @@ class Login extends Component {
   };
   render() {
     return (
-      <div>
-        <form onSubmit={this.login}>
+      <div className="login-page">
+        {/* <div className="login-slice"> */}
+        {/* <div className="login-pic-2"></div> */}
+        <form onSubmit={this.login} className="login-form">
+          <div className="login-title">LOGIN</div>
           <input
             onChange={(e) => this.createRecipe(e)}
             id="email"
             type="email"
-            placeholder="Email"
-          />
+            placeholder="Email"          />
           <br />
           <input
             onChange={(e) => this.createRecipe(e)}
             id="password"
             type="text"
-            placeholder="Password"
-          />
-          <br />
-          <br />
-          <button type="submit">LOGIN</button>
-          <button type="submit">
-            <Link to="/signup" className="header-link">
-              SIGNUP
-            </Link>
+            placeholder="Password"          />
+          <Link to="/reset-password-request" className="change-password">
+            Forgot your password?
+          </Link>
+          <button type="submit" className="main-button">
+            LOGIN
           </button>
-          <button>
-            <Link to="/reset-password-request" className="header-link">
-              RESET PASSWORD
-            </Link>
-          </button>
+          <div className="line">
+            <div className="line-l" />
+            or
+            <div className="line-r" />
+          </div>
+          <Link to="/signup" className="header-link button">
+            SIGNUP
+          </Link>
         </form>
-        <div id="message">message: {this.state.message}</div>
+        {/* </div> */}
+        <div id="message"> {this.state.message}</div>
       </div>
     );
   }

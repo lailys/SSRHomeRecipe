@@ -5,14 +5,15 @@ import { Link, Route } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 
 class Cart extends Component {
-  state={
-    message:""
-  }
+  state = {
+    message: "",
+  };
   componentDidMount() {
     console.log("componentDidMount of cart", this.props);
-    if(Object.keys(this.props.auth).length<1){
-      this.setState({ message: "session has been expired, please login again"})
-     
+    if (Object.keys(this.props.auth).length < 1) {
+      this.setState({
+        message: "session has been expired, please login again",
+      });
     }
     this.props.fetchCartItems();
     this.setState({ total: this.props.cart.total });
@@ -28,13 +29,14 @@ class Cart extends Component {
       console.log(this.props.cart.items, "::");
       return this.props.cart.items.map((item, i) => {
         return (
-          <div key={i}>
-            <br />
-            <div>{item.name}</div>
-            <div>quantity:{item.quantity}</div>
-            <button onClick={(e) => this.removeFromCart(e, item)}>
-              REMOVE
-            </button>
+          <div key={i} className="cart-item">
+            <div className="cart-item-number">
+              <div>{item.name}</div>
+              <div>quantity:{item.quantity}</div>
+              <button onClick={(e) => this.removeFromCart(e, item)}>
+                REMOVE
+              </button>
+            </div>
           </div>
         );
       });
@@ -48,13 +50,13 @@ class Cart extends Component {
   submitOrder(e) {
     // this.props.submitOrder(this.props.cart);
     // this.props.history.push("/checkout");
-    this.setState({message:"there is no checkout service at the moment"})
+    this.setState({ message: "there is no checkout service at the moment" });
   }
 
   render() {
     return (
-      <div>
-        <h1>CART</h1>
+      <div className="cart-page">
+        <div className="cart-title">CART</div>
         {this.renderCart()}
         <br />
         <div>{this.props.cart.total}</div>
@@ -68,15 +70,15 @@ class Cart extends Component {
 
 function mapStateToProps(state) {
   console.log("mapStateToProps---->state.cart", state);
-  
+
   return {
     cart: state.cart,
-    auth:state.auth
+    auth: state.auth,
   };
 }
 
-const loadedData = (store, id,logged,user) => {
-  console.log(store, id,logged,user, "loadingggggggg loadedData Cart");
+const loadedData = (store, id, logged, user) => {
+  console.log(store, id, logged, user, "loadingggggggg loadedData Cart");
   // return store.dispatch(ownerCartItems(user._id));
 };
 export default withRouter({

@@ -10,6 +10,7 @@ class Orders extends Component {
   };
   componentDidMount() {
     console.log("componentDidMount of orders", this.props);
+    this.props.history.push(`/home-recipes/${localStorage.getItem("user")}`);
     if(Object.keys(this.props.auth).length<1){
       this.setState({ message: "session has been expired, please login again"})
      

@@ -7,7 +7,7 @@ import { resetPasswordRequest } from "../actions";
 class ResetPasswordReq extends Component {
   state = {
     email: {},
-    message:""
+    message: "",
   };
   componentDidMount() {
     console.log("componentDidMount of resetPassword", this.props);
@@ -25,53 +25,55 @@ class ResetPasswordReq extends Component {
       this.state.email,
       "this.state.newUser.password===this.state.newUser.confirmPassword"
     );
-  this.props.resetPasswordRequest(this.state.email)
-  .then(res=>{
-    if(this.props.exist===1){
-
-      this.setState({ message:"submitted!" });
-    }else{
-      this.setState({ message:"email dosnt exist" });
-    }
-  })
+    this.props.resetPasswordRequest(this.state.email).then((res) => {
+      if (this.props.exist === 1) {
+        this.setState({ message: "submitted!" });
+      } else {
+        this.setState({ message: "email dosnt exist" });
+      }
+    });
   };
   render() {
     return (
-      <div>
-             <form onSubmit={this.request}>
+      <div className="login-page">
+        <form onSubmit={this.request} className="login-form">
+          <br />
+          <br />
+          <br />
+          <br />
+          <div className="login-title">ACCOUNT RECOVERY</div>
           <input
             onChange={(e) => this.createRecipe(e)}
             id="email"
             type="email"
-            placeholder='email'
+            placeholder="email"
             required
           />
           <br />
           <br />
           <br />
-          <button type="submit">RESET PASSWORD</button>
+          <button type="submit" className="main-button">
+            RESET PASSWORD
+          </button>
           <br />
           <br />
-          <br />
-          <div id="message">message: {this.state.message}</div>
         </form>
-
+        <div id="message">message: {this.state.message}</div>
       </div>
     );
   }
 }
 
-
 function mapStateToProps(state) {
   console.log("mapStateToProps---->state. ResetPasswordReq", state);
   return {
-    exist:state.exist,
-   //  csrf:state.csrf
-};
+    exist: state.exist,
+    //  csrf:state.csrf
+  };
 }
 
-
 export default withRouter({
-
-  component: connect(mapStateToProps, { resetPasswordRequest })(ResetPasswordReq),
+  component: connect(mapStateToProps, { resetPasswordRequest })(
+    ResetPasswordReq
+  ),
 });

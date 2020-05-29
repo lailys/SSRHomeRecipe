@@ -8,6 +8,7 @@ import signupReducer from './signupReducer';
 import passwordUpdateReducer from './passwordUpdateReducer';
 import passwordRequestReducer from './passwordRequestReducer';
 import ownerReducer from './ownerReducer';
+import cartBUttonReducer from './cartBUttonReducer';
 // import csrfReducer from './csrfReducer';
 
 
@@ -20,6 +21,7 @@ export default combineReducers({
   newUser:signupReducer,
   passwordOwner:passwordUpdateReducer,
   exist:passwordRequestReducer,
-  ownerRecipes:ownerReducer
+  ownerRecipes:ownerReducer,
+  openCart:cartBUttonReducer
   // csrf:csrfReducer
 });

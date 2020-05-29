@@ -7,10 +7,11 @@ import { withRouter } from "react-router-dom";
 class Checkout extends Component {
   state = {
     payment: {},
+    message:""
   };
   componentDidMount() {
     console.log("componentDidMount of cart", this.props);
-    if (!this.props.auth) {
+    if (Object.keys(this.props.auth).length < 1) {
       this.props.history.push("/login");
     }
     this.props.fetchCartItems();
@@ -22,18 +23,21 @@ class Checkout extends Component {
       this.props.fetchCartItems();
     }
   }
+
   renderCart() {
     if (this.props.cart !== null) {
       console.log(this.props.cart.items, "::");
       return this.props.cart.items.map((item, i) => {
         return (
-          <div key={i}>
-            <br />
-            <div>{item.name}</div>
-            <div>quantity:{item.quantity}</div>
-            <button onClick={(e) => this.removeFromCart(e, item)}>
-              REMOVE
-            </button>
+          <div key={i} className="checkout-each-item">
+            <div className="checkout-item">
+              <div className="checkout-title-qty">quantity:{item.quantity}</div>
+              <div className="checkout-title-name">{item.name}</div>
+              <div className="checkout-title-price">{item.price}</div>
+              <button onClick={(e) => this.removeFromCart(e, item)}>
+                REMOVE
+              </button>
+            </div>
           </div>
         );
       });
@@ -41,7 +45,7 @@ class Checkout extends Component {
   }
   paymentForm() {
     return (
-      <form>
+      <form className="payment-form">
         <input
           onChange={(e) => this.createRecipe(e)}
           id="name"
@@ -58,24 +62,6 @@ class Checkout extends Component {
         />
         <br />
       </form>
-      //   <form onSubmit={} >
-      //   <input
-      //     onChange={(e) => this.createRecipe(e)}
-      //     id="name"
-      //     type="text"
-      //     placeholder="name"
-      //   />
-      //   <br />
-      //   <br />
-      //   <input
-      //     onChange={(e) => this.createRecipe(e)}
-      //     id="creditCard"
-      //     type="text"
-      //     placeholder="Credit card number"
-      //   />
-      //   <br />
-
-      // </form>
     );
   }
   createRecipe = (e) => {
@@ -88,32 +74,45 @@ class Checkout extends Component {
     });
   };
   submitOrder(e) {
-    this.props.submitOrder(this.props.cart);
-    this.props.history.push("/orders");
+    this.setState({ message: "We dont offer checkout yet" });
+
+    // this.props.submitOrder(this.props.cart);
+    // this.props.history.push("/orders");
   }
 
   render() {
     return (
-      <div>
-        <h1>checkout</h1>
-        <div className="order-review">
-          {this.renderCart()}
-          <div>{this.props.cart.total}</div>
+      <div className="checkout-page">
+        <div className="checkout-title">CHECKOUT</div>
+
+        {/* <div className="checkout-title-bar">
+            <span className="checkout-title-qty">QTY</span>
+            <span className="checkout-title-name">RECIPE</span>
+            <span className="checkout-title-price"> PRICE</span>
+            <span className="checkout-title-empty"> </span>
+          </div> */}
+        <br />
+        <div className="checkout-slice">{this.renderCart()}</div>
+        <br />
+        <div className="checkout-buttom-bar">
+          <div className="checkout-title-total">
+            TOTAL: ${this.props.cart.total}
+          </div>
         </div>
+
         <div className="checkout-payment">{this.paymentForm()}</div>
-        <button
-          onClick={(e) => this.submitOrder(e)}
-          className="checkout-button"
-        >
+        <button onClick={(e) => this.submitOrder(e)} className="order-button">
           PLACE ORDER
         </button>
+        <div className="cart-message">{this.state.message}</div>
+
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps---->state.cart", state);
+  console.log("mapStateToProps---->state.checkout", state);
 
   return {
     cart: state.cart,
@@ -122,8 +121,8 @@ function mapStateToProps(state) {
 }
 
 const loadedData = (store, id, logged, user) => {
-  console.log(store, id, logged, user, "loadingggggggg loadedData Cart");
-  return store.dispatch(ownerCartItems(user._id));
+  console.log(store, id, logged, user, "loadingggggggg loadedData checkout");
+  // return store.dispatch(ownerCartItems(user._id));
 };
 export default withRouter({
   loadedData,

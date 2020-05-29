@@ -22,10 +22,28 @@ const recipeSchema = new Schema({
     type: Number,
     required: true
   },
-//  userName: {
-//     type: string,
-//     required: true
-//   },
+ comments: [{
+      commenter:{
+        type: String,
+        required: true
+      },
+      comment:{
+        type: String,
+        required: true
+      }
+  }],
+  stars:{
+    type: Number,
+    required: true
+  },
+  author:{
+    type: String,
+    required: true
+  },
+  category:{
+    type: String,
+    required: true
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -36,4 +54,16 @@ const recipeSchema = new Schema({
   timestamps: true
 });
 
+recipeSchema.methods.addComment = function (comment,user) {
+  console.log(comment,user, "recipe schema ")
+
+  const updatedItemComments = [...this.comments];
+
+
+  updatedItemComments.push({comment:comment,commenter:user});
+
+
+  this.comments = updatedItemComments;
+  return this.save();
+};
 module.exports = mongoose.model('Recipe', recipeSchema);
