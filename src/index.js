@@ -27,7 +27,6 @@ import https from "https";
 
 const app = express();
 app.use(cookieParser());
-// const MONGODB_URL="mongodb+srv://laily:MwZ0kloNsWWxHN5F@cluster0-m4fqf.mongodb.net/page?retryWrites=true"
 const MONGODB_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-m4fqf.mongodb.net/${process.env.MONGO_DEFAULT_DATABASE}?retryWrites=true`;
 const MongoDBStore = connectMongoDBSession(session);
 const fileStorage = multer.diskStorage({
